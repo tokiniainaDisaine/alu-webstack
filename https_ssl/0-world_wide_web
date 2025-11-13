@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+# This script displays informarion about a website
+
+fetch_info() {
+    local domain=$1
+    local subdomain=$2
+    eval $(dig $subdomain.$domain | grep 'IN' | tail -n 1 | awk '{print "host="$1, "ttl="$2, "class="$3, "type="$4, "ip="$5}')
+    echo "The subdomain $subdomain is a $record_type record and points to $ip"
+}
+
+domain=$1
+subdomain=$2
+url="$subdomain.$domain"
+
+if [ "$#" -eq 1 ]; then
+    fetch_info $domain www 
+    fetch_info $domain lb-01 
+    fetch_info $domain web-01 
+    fetch_info $domain web-02 
+elif [ "$#" -eq 2 ]; then
+    fetch_info $domain $subdomain 
+else
+    echo "This script must take one or two parameter [domain, subdomain]"
+    exit 1
+fi
