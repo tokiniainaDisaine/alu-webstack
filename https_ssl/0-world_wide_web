@@ -4,7 +4,7 @@
 fetch_info() {
     local domain=$1
     local subdomain=$2
-    eval $(dig $subdomain.$domain | grep 'IN' | tail -n 1 | awk '{print "host="$1, "ttl="$2, "class="$3, "type="$4, "ip="$5}')
+    eval $(dig $subdomain.$domain | grep 'IN' | tail -n 1 | awk '{print "host="$1, "ttl="$2, "class="$3, "record_type="$4, "ip="$5}')
     echo "The subdomain $subdomain is a $record_type record and points to $ip"
 }
 
